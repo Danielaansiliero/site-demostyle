@@ -57,9 +57,12 @@ document.addEventListener('DOMContentLoaded', function() {
     // ========================================
     const whatsappBtn = document.getElementById('whatsappBtn');
 
-    if (whatsappBtn && typeof CONFIG !== 'undefined') {
-        const whatsappNumber = CONFIG.whatsapp.number;
-        const defaultMessage = encodeURIComponent(CONFIG.whatsapp.defaultMessage);
+    if (whatsappBtn) {
+        // Fallback para quando config.js não existe (produção)
+        const whatsappNumber = typeof CONFIG !== 'undefined' ? CONFIG.whatsapp.number : '5554996307623';
+        const defaultMessage = typeof CONFIG !== 'undefined'
+            ? encodeURIComponent(CONFIG.whatsapp.defaultMessage)
+            : encodeURIComponent('Olá! Gostaria de saber mais sobre os produtos da DemoStyle.');
         whatsappBtn.href = `https://wa.me/${whatsappNumber}?text=${defaultMessage}`;
     }
 
@@ -68,13 +71,14 @@ document.addEventListener('DOMContentLoaded', function() {
     // ========================================
     const buyButtons = document.querySelectorAll('.buy-now');
 
-    if (buyButtons.length > 0 && typeof CONFIG !== 'undefined') {
+    if (buyButtons.length > 0) {
         buyButtons.forEach(button => {
             button.addEventListener('click', function(e) {
                 e.preventDefault();
 
                 const productName = this.getAttribute('data-product');
-                const whatsappNumber = CONFIG.whatsapp.number;
+                // Fallback para quando config.js não existe (produção)
+                const whatsappNumber = typeof CONFIG !== 'undefined' ? CONFIG.whatsapp.number : '5554996307623';
                 const message = encodeURIComponent(`Olá! Tenho interesse no produto: ${productName}. Gostaria de mais informações.`);
 
                 window.open(`https://wa.me/${whatsappNumber}?text=${message}`, '_blank');
@@ -85,27 +89,38 @@ document.addEventListener('DOMContentLoaded', function() {
     // ========================================
     // 5. PREENCHER FOOTER COM DADOS DO CONFIG
     // ========================================
-    if (typeof CONFIG !== 'undefined') {
-        // Contato
-        const footerPhone = document.getElementById('footerPhone');
-        const footerEmail = document.getElementById('footerEmail');
-        const footerAddress = document.getElementById('footerAddress');
-        const footerLocation = document.getElementById('footerLocation');
+    // Fallbacks para quando config.js não existe (produção)
+    const contactInfo = typeof CONFIG !== 'undefined' ? CONFIG.contact : {
+        phone: '(54) 99630-7623',
+        email: 'contato@demostyle.com',
+        address: 'Rua da Elegância, 100 - Centro'
+    };
 
-        if (footerPhone) footerPhone.textContent = CONFIG.contact.phone;
-        if (footerEmail) footerEmail.textContent = CONFIG.contact.email;
-        if (footerAddress) footerAddress.textContent = CONFIG.contact.address;
-        if (footerLocation) footerLocation.textContent = CONFIG.contact.address;
+    const socialInfo = typeof CONFIG !== 'undefined' ? CONFIG.social : {
+        instagram: 'https://instagram.com/demostyle',
+        facebook: 'https://facebook.com/demostyle',
+        linkedin: 'https://linkedin.com/company/demostyle'
+    };
 
-        // Redes Sociais
-        const socialInstagram = document.getElementById('socialInstagram');
-        const socialFacebook = document.getElementById('socialFacebook');
-        const socialLinkedin = document.getElementById('socialLinkedin');
+    // Contato
+    const footerPhone = document.getElementById('footerPhone');
+    const footerEmail = document.getElementById('footerEmail');
+    const footerAddress = document.getElementById('footerAddress');
+    const footerLocation = document.getElementById('footerLocation');
 
-        if (socialInstagram) socialInstagram.href = CONFIG.social.instagram;
-        if (socialFacebook) socialFacebook.href = CONFIG.social.facebook;
-        if (socialLinkedin) socialLinkedin.href = CONFIG.social.linkedin;
-    }
+    if (footerPhone) footerPhone.textContent = contactInfo.phone;
+    if (footerEmail) footerEmail.textContent = contactInfo.email;
+    if (footerAddress) footerAddress.textContent = contactInfo.address;
+    if (footerLocation) footerLocation.textContent = contactInfo.address;
+
+    // Redes Sociais
+    const socialInstagram = document.getElementById('socialInstagram');
+    const socialFacebook = document.getElementById('socialFacebook');
+    const socialLinkedin = document.getElementById('socialLinkedin');
+
+    if (socialInstagram) socialInstagram.href = socialInfo.instagram;
+    if (socialFacebook) socialFacebook.href = socialInfo.facebook;
+    if (socialLinkedin) socialLinkedin.href = socialInfo.linkedin;
 
     // ========================================
     // 6. SMOOTH SCROLL PARA LINKS INTERNOS
