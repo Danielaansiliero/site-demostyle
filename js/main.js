@@ -59,7 +59,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     if (whatsappBtn) {
         // Fallback para quando config.js não existe (produção)
-        const whatsappNumber = typeof CONFIG !== 'undefined' ? CONFIG.whatsapp.number : '5554996307623';
+        const whatsappNumber = typeof CONFIG !== 'undefined' ? CONFIG.whatsapp.number : '5554996397623';
         const defaultMessage = typeof CONFIG !== 'undefined'
             ? encodeURIComponent(CONFIG.whatsapp.defaultMessage)
             : encodeURIComponent('Olá! Gostaria de saber mais sobre os produtos da DemoStyle.');
@@ -78,7 +78,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
                 const productName = this.getAttribute('data-product');
                 // Fallback para quando config.js não existe (produção)
-                const whatsappNumber = typeof CONFIG !== 'undefined' ? CONFIG.whatsapp.number : '5554996307623';
+                const whatsappNumber = typeof CONFIG !== 'undefined' ? CONFIG.whatsapp.number : '5554996397623';
                 const message = encodeURIComponent(`Olá! Tenho interesse no produto: ${productName}. Gostaria de mais informações.`);
 
                 window.open(`https://wa.me/${whatsappNumber}?text=${message}`, '_blank');
